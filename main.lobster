@@ -1,7 +1,7 @@
+import std
 import vec
 import color
 import gl
-import std
 
 fatal(gl_window("2D Shooter", 640, 480))
 
@@ -19,11 +19,6 @@ let bulletspeed = 15
 var bullets = []
 var lastbullet = gl_time()
 
-def rendercharacter(pos, dir):
-    gl_translate pos:
-        gl_rotate_z dir:
-            gl_polygon([ xy {-0.5, 0.5}, xy_x, xy {-0.5, -0.5} ])
-
 class enemy:
     pos: xy_f
     hp: int
@@ -34,6 +29,11 @@ let enemymaxhp = 5
 var enemies = []
 var lastenemy = gl_time()
 
+def rendercharacter(pos, dir):
+    gl_translate pos:
+        gl_rotate_z dir:
+            gl_polygon([ xy { -0.5, 0.5 }, xy_x, xy { -0.5, -0.5 } ])
+
 while gl_frame() and gl_button("escape") != 1:
     gl_clear(color_black)
     gl_color(color_white)
@@ -43,7 +43,7 @@ while gl_frame() and gl_button("escape") != 1:
     gl_scale(scale)
 
     let dir = xy_f { (gl_button("d") >= 1) - (gl_button("a") >= 1),
-                      (gl_button("s") >= 1) - (gl_button("w") >= 1) }
+                  (gl_button("s") >= 1) - (gl_button("w") >= 1) }
     let newpos = playerpos + normalize(dir) * gl_delta_time() * playerspeed
     if not any(abs(newpos) > float(gl_window_size()) / scale / 2):
         playerpos = newpos
@@ -63,13 +63,13 @@ while gl_frame() and gl_button("escape") != 1:
         let playerdir = normalize(playerpos - e.pos)
         e.pos += playerdir * gl_delta_time() * enemyspeed
         for(bullets) b:
-            if magnitude(b.pos - 1.0):
-                e.hp = max(e.hp -1, 0)
+            if magnitude(b.pos - e.pos) < 1:
+                e.hp = max(e.hp - 1, 0)
                 b.pos = xy_x * worldsize * 10
         gl_color lerp(color_red, color_blue, div(e.hp, enemymaxhp)):
             rendercharacter(e.pos, playerdir)
-    
-    enemies = filter enemies: _.hp
+
+    enemies = filter(enemies): _.hp
 
     for(bullets) b:
         b.pos += b.dir * gl_delta_time() * bulletspeed
