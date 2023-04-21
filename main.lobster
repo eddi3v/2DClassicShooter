@@ -35,9 +35,10 @@ while gl_frame() and gl_button("escape") != 1:
 
     let tomouse = normalize(gl_local_mouse_pos(0) - playerpos)
 
-    if lastbullet < gl_time():
-        bullets.push(bullet { playerpos, tomouse })
-        lastbullet += firerate
+    if(gl_button("space")):
+        if lastbullet < gl_time():
+            bullets.push(bullet { playerpos, tomouse })
+            lastbullet += firerate
 
     for(bullets) b:
         b.pos += b.dir * gl_delta_time() * bulletspeed
