@@ -77,9 +77,9 @@ class World:
     score = 0
 
     worldsize = 20.0
-    timevar = 0.1
+    timevar = 0.01
     new_worldsize = 0.0
-    
+
     def update_worldsize(pos1, pos2):
         timevar += gl_delta_time()
         if timevar <= 1.0:
@@ -120,7 +120,6 @@ class World:
 
             if score >= 10:
                 worldsize = update_worldsize(20.0, 25.0)
-                print worldsize
 
         return player.health
 
