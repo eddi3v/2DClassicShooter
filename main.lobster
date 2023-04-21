@@ -43,7 +43,7 @@ while gl_frame() and gl_button("escape") != 1:
         b.pos += b.dir * gl_delta_time() * bulletspeed
         gl_translate b.pos:
             gl_color color_yellow:
-                gl_circle(0.2, 20)
+                gl_circle(0.1, 20)
 
     bullets = filter(bullets) b:
         magnitude(b.pos) < worldsize * 2
