@@ -75,7 +75,7 @@ class World:
     score = 0
 
     def update():
-        let worldsize = 20.0
+        let worldsize = 30.0
         let firerate = 0.1
         let enemymaxhp = 5
         gl_translate float(gl_window_size()) / 2.0:
