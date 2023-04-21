@@ -69,15 +69,24 @@ class World:
 
     bullets = []
     lastbullet = gl_time()
+    firerate = 0.1
 
     enemies = []
+    enemymaxhp = 5
 
     score = 0
 
+    worldsize = 20.0
+    timevar = 0.1
+    new_worldsize = 0.0
+    
+    def update_worldsize(pos1, pos2):
+        timevar += gl_delta_time()
+        if timevar <= 1.0:
+            new_worldsize = lerp(pos1, pos2, timevar)
+        return new_worldsize
+                
     def update():
-        let worldsize = 30.0
-        let firerate = 0.1
-        let enemymaxhp = 5
         gl_translate float(gl_window_size()) / 2.0:
             let scale = gl_window_size().y / worldsize
             gl_scale(scale)
@@ -108,6 +117,10 @@ class World:
                 gl_line_mode 1:
                     gl_color color_grey:
                         gl_circle(0.5, 20)
+
+            if score >= 10:
+                worldsize = update_worldsize(20.0, 25.0)
+                print worldsize
 
         return player.health
 
