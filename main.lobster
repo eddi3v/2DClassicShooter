@@ -3,7 +3,7 @@ import vec
 import color
 import gl
 
-fatal(gl_window("2D Shooter", 640, 480))
+fatal(gl_window("2D Space Shooter", 1280, 720))
 check(gl_set_font_name("data/fonts/US101/US101.ttf") and gl_set_font_size(32), "can\'t load font!")
 
 let worldsize = 20.0
