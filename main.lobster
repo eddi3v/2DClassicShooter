@@ -24,6 +24,16 @@ def rendercharacter(pos, dir):
         gl_rotate_z dir:
             gl_polygon([ xy {-0.5, 0.5}, xy_x, xy {-0.5, -0.5} ])
 
+class enemy:
+    pos: xy_f
+    hp: int
+
+var enemyrate = 1.0
+let enemyspeed = 3
+let enemymaxhp = 5
+var enemies = []
+var lastenemy = gl_time()
+
 while gl_frame() and gl_button("escape") != 1:
     gl_clear(color_black)
     gl_color(color_white)
@@ -40,10 +50,26 @@ while gl_frame() and gl_button("escape") != 1:
 
     let tomouse = normalize(gl_local_mouse_pos(0) - playerpos)
 
-    if(gl_button("space")):
-        if lastbullet < gl_time():
-            bullets.push(bullet { playerpos, tomouse })
-            lastbullet += firerate
+    if lastenemy < gl_time():
+        enemies.push(enemy { sincos(rnd(360)) * worldsize * 2, enemymaxhp })
+        lastenemy += enemyrate
+        enemyrate *= 0.999
+
+    if lastbullet < gl_time():
+        bullets.push(bullet { playerpos, tomouse })
+        lastbullet += firerate
+
+    for(enemies) e:
+        let playerdir = normalize(playerpos - e.pos)
+        e.pos += playerdir * gl_delta_time() * enemyspeed
+        for(bullets) b:
+            if magnitude(b.pos - 1.0):
+                e.hp = max(e.hp -1, 0)
+                b.pos = xy_x * worldsize * 10
+        gl_color lerp(color_red, color_blue, div(e.hp, enemymaxhp)):
+            rendercharacter(e.pos, playerdir)
+    
+    enemies = filter enemies: _.hp
 
     for(bullets) b:
         b.pos += b.dir * gl_delta_time() * bulletspeed
@@ -58,5 +84,5 @@ while gl_frame() and gl_button("escape") != 1:
         gl_line_mode 1:
             gl_color color_grey:
                 gl_circle(0.5, 20)
-    
+
     rendercharacter(playerpos, tomouse)
