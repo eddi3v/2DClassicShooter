@@ -88,6 +88,11 @@ class World:
     timevar = 0.01
     new_worldsize = 0.0
 
+    def render_background():
+        gl_set_primitive_texture(0, bgtex)
+    
+        gl_rect(xy_1, 1)
+
     def update_worldsize(pos1, pos2):
         timevar += gl_delta_time()
         if timevar <= 1.0:
@@ -95,15 +100,18 @@ class World:
         return new_worldsize
                 
     def update():
+
         gl_translate float(gl_window_size()) / 2.0:
             let scale = gl_window_size().y / worldsize
             gl_scale(scale)
+
+            render_background()
 
             let tomouse = player.update(float(gl_window_size()) / scale / 2.0)
 
             member lastenemy = gl_time()
             if lastenemy < gl_time():
-                enemies.push(Enemy { sincos(rnd(360)) * worldsize * 2.0, enemymaxhp })
+                enemies.push(Enemy { sincos(rnd(360)) * worldsize * 2.0, enemymaxhp})
                 member enemyrate = 1.0
                 lastenemy += enemyrate
                 enemyrate *= 0.999
@@ -142,7 +150,9 @@ class World:
 
 while gl_frame() and gl_button("escape") != 1:
     gl_clear(color_black)
+
     gl_set_shader("textured")
+    
     gl_color(color_white)
 
     static highscore = 0
