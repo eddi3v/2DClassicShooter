@@ -13,6 +13,8 @@ let shiptex = gl_load_texture("MainShip.png")
 assert shiptex
 let enemyshiptex = gl_load_texture("EnemyShip.png")
 assert enemyshiptex
+let bullettex = gl_load_texture("bullet.png")
+assert bullettex
 
 class Entity:
     pos:xy_f
@@ -51,7 +53,8 @@ class Bullet : Entity
         pos += dir * gl_delta_time() * bulletspeed
         gl_translate pos:
             gl_color color_yellow:
-                gl_circle(0.1, 20)
+                gl_set_primitive_texture(0, bullettex)
+                gl_rect(xy { 0.5, 0.5 }, 1)
         if magnitude(pos) > maxdist:
             alive = false
 
@@ -69,8 +72,7 @@ class Enemy : Entity
                 b.alive = false
         if magnitude(playervec) < 1.0:
             player.damage(gl_delta_time() * 25.0)
-        gl_color lerp(color_red, color_blue, div(hp, maxhp)):
-            renderEntity(playerdir, enemyshiptex)
+        renderEntity(playerdir, enemyshiptex)
 
 class World:
     player = Player { xy_0 }
