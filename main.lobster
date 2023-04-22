@@ -16,12 +16,14 @@ let bgtex = gl_load_texture("assets/galaxy.jpg")
 let shiptex = gl_load_texture("assets/MainShip.png")
 let enemyshiptex = gl_load_texture("assets/EnemyShip.png")
 let bullettex = gl_load_texture("assets/bullet.png")
+let bulletlasertex = gl_load_texture("assets/bullet_laser.png")
 let crosshairtex = gl_load_texture("assets/crosshair.png")
 
 assert bgtex
 assert shiptex
 assert enemyshiptex
 assert bullettex
+assert bulletlasertex
 assert crosshairtex
 
 class World:
@@ -67,7 +69,7 @@ class World:
                 enemyrate *= 0.999
 
             if lastbullet < gl_time():
-                bullets.push(Bullet { player.pos, tomouse, bullettex })
+                bullets.push(Bullet { player.pos, tomouse, bulletlasertex })
                 lastbullet += firerate
 
             enemies = filter(enemies) e:
