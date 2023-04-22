@@ -21,11 +21,11 @@ assert crosshairtex
 class Entity:
     pos:xy_f
 
-    def renderEntity(dir, tex):
+    def renderEntity(dir, size:xy_f, tex):
         gl_translate pos:
             gl_rotate_z dir:
                 gl_set_primitive_texture(0, tex)
-                gl_rect(xy { 1.0, 1.0 }, 1)
+                gl_rect(size, 1)
 
 class Player : Entity
     health = 100.0
@@ -38,7 +38,7 @@ class Player : Entity
         if not any(abs(newpos) > bounds):
             pos = newpos
         let tomouse = normalize(gl_local_mouse_pos(0) - pos)
-        renderEntity(tomouse, shiptex)
+        renderEntity(tomouse, xy{1.0,1.0}, shiptex)
         return tomouse
 
     def damage(amount):
@@ -74,7 +74,7 @@ class Enemy : Entity
                 b.alive = false
         if magnitude(playervec) < 1.0:
             player.damage(gl_delta_time() * 25.0)
-        renderEntity(playerdir, enemyshiptex)
+        renderEntity(playerdir, xy{1.0,1.0}, enemyshiptex)
 
 class World:
     player = Player { xy_0 }
