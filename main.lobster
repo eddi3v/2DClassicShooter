@@ -69,7 +69,7 @@ class World:
 
     bullets = []
     lastbullet = gl_time()
-    firerate = 0.1
+    firerate = 0.15
 
     enemies = []
     enemymaxhp = 5
@@ -120,6 +120,7 @@ class World:
 
             if score >= 10:
                 worldsize = update_worldsize(20.0, 25.0)
+                firerate = 0.1
 
         return player.health
 
