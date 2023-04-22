@@ -7,6 +7,12 @@ fatal(gl_window("2D Space Shooter", 1280, 720))
 
 check(gl_set_font_name("data/fonts/US101/US101.ttf") and gl_set_font_size(32), "can\'t load font!")
 
+let bgtex = gl_load_texture("galaxy.jpg")
+assert bgtex
+let shiptex = gl_load_texture("MainShip.png")
+assert shiptex
+let enemyshiptex = gl_load_texture("EnemyShip.png")
+assert enemyshiptex
 class Entity:
     pos:xy_f
 
