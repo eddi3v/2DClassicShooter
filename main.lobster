@@ -12,8 +12,9 @@ fatal(gl_window("2D Space Shooter", 1280, 720))
 
 check(gl_set_font_name("data/fonts/US101/US101.ttf") and gl_set_font_size(32), "can\'t load font!")
 
-let bgmusic_normal = play_ogg("assets/bg_fast.ogg", -1) 
-if bgmusic_normal: sound_volume(bgmusic_normal, 0.3) else: print "can\'t load music!"
+let bgmusic = play_ogg("assets/bg_fast.ogg", -1) 
+if bgmusic: sound_volume(bgmusic, 0.3) else: print "can\'t load music!"
+sound_pause(bgmusic)
 
 let bgtex = gl_load_texture("assets/galaxy.jpg")
 let shiptex = gl_load_texture("assets/MainShip.png")
@@ -88,7 +89,6 @@ class World:
                 gl_set_primitive_texture(0, crosshairtex)
                 gl_rect(xy { 0.4, 0.4 }, 1)
 
-            if score < 100:
             if score >= 100:
                 firerate = 0.13
             if score >= 200:
@@ -118,6 +118,7 @@ while gl_frame() and gl_button("escape") != 1:
         if not w.update():
             highscore = max(highscore, w.score)
             w = nil
+            sound_pause(bgmusic)
     else:
         gl_text("highscore: {highscore}")
         let msg = "press space to play!"
@@ -125,3 +126,4 @@ while gl_frame() and gl_button("escape") != 1:
             gl_text(msg)
         if gl_button("space") == 1:
             w = World {}
+            sound_resume(bgmusic)
