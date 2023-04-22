@@ -21,7 +21,7 @@ class Entity:
         gl_translate pos:
             gl_rotate_z dir:
                 gl_set_primitive_texture(0, tex)
-                gl_rect(xy { 0.8, 0.5 }, 1)
+                gl_rect(xy { 1.0, 1.0 }, 1)
 
 class Player : Entity
     health = 100.0
@@ -100,12 +100,10 @@ class World:
         return new_worldsize
                 
     def update():
-
         gl_translate float(gl_window_size()) / 2.0:
+            render_background()
             let scale = gl_window_size().y / worldsize
             gl_scale(scale)
-
-            render_background()
 
             let tomouse = player.update(float(gl_window_size()) / scale / 2.0)
 
