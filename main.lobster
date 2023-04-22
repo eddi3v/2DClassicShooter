@@ -12,6 +12,16 @@ fatal(gl_window("2D Space Shooter", 1280, 720))
 
 check(gl_set_font_name("data/fonts/US101/US101.ttf") and gl_set_font_size(32), "can\'t load font!")
 
+let bgmusic_normal = play_ogg("assets/bg_fast.ogg", -1) 
+if bgmusic_normal: sound_volume(bgmusic_normal, 0.3) else: print "can\'t load music!"
+sound_pause(bgmusic_normal)
+let bgmusic_slower = play_ogg("assets/bg_slower.ogg", -1) 
+if bgmusic_slower: sound_volume(bgmusic_slower, 0.3) else: print "can\'t load music!"
+sound_pause(bgmusic_slower)
+let bgmusic_slowest = play_ogg("assets/bg_slowest.ogg", -1) 
+if bgmusic_slowest: sound_volume(bgmusic_slowest, 0.3) else: print "can\'t load music!"
+sound_pause(bgmusic_slowest)
+
 let bgtex = gl_load_texture("assets/galaxy.jpg")
 let shiptex = gl_load_texture("assets/MainShip.png")
 let enemyshiptex = gl_load_texture("assets/EnemyShip.png")
@@ -85,17 +95,23 @@ class World:
                 gl_set_primitive_texture(0, crosshairtex)
                 gl_rect(xy { 0.4, 0.4 }, 1)
 
+            if score < 100:
+                sound_resume(bgmusic_slowest)
             if score >= 100:
                 firerate = 0.13
             if score >= 200:
                 worldsize = update_worldsize(20.0, 25.0)
             if score >= 250:
                 firerate = 0.11
+                sound_pause(bgmusic_slowest)
+                sound_resume(bgmusic_slower)
             if score >= 400:
                 firerate = 0.1
             if score >= 500:
                 worldsize = update_worldsize(25.0, 30.0)
                 firerate = 0.09
+                sound_pause(bgmusic_slower)
+                sound_resume(bgmusic_normal)
 
         return player.health
 
