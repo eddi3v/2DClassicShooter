@@ -15,6 +15,8 @@ let enemyshiptex = gl_load_texture("EnemyShip.png")
 assert enemyshiptex
 let bullettex = gl_load_texture("bullet.png")
 assert bullettex
+let crosshairtex = gl_load_texture("crosshair.png")
+assert crosshairtex
 
 class Entity:
     pos:xy_f
@@ -130,9 +132,8 @@ class World:
                 b.alive
 
             gl_translate gl_local_mouse_pos(0):
-                gl_line_mode 1:
-                    gl_color color_grey:
-                        gl_circle(0.5, 20)
+                gl_set_primitive_texture(0, crosshairtex)
+                gl_rect(xy { 0.4, 0.4 }, 1)
 
             if score >= 100:
                 firerate = 0.13
