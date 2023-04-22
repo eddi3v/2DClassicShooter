@@ -91,7 +91,7 @@ class World:
     def render_background():
         gl_set_primitive_texture(0, bgtex)
     
-        gl_rect(xy_1, 1)
+        gl_rect(float(gl_window_size())/2.0, 1)
 
     def update_worldsize(pos1, pos2):
         timevar += gl_delta_time()
