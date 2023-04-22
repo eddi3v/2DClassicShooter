@@ -13,13 +13,15 @@ let shiptex = gl_load_texture("MainShip.png")
 assert shiptex
 let enemyshiptex = gl_load_texture("EnemyShip.png")
 assert enemyshiptex
+
 class Entity:
     pos:xy_f
 
-    def renderEntity(dir):
+    def renderEntity(dir, tex):
         gl_translate pos:
             gl_rotate_z dir:
-                gl_polygon([ xy { -0.5, 0.5 }, xy_x, xy { -0.5, -0.5 } ])
+                gl_set_primitive_texture(0, tex)
+                gl_rect(xy { 0.8, 0.5 }, 1)
 
 class Player : Entity
     health = 100.0
@@ -32,7 +34,7 @@ class Player : Entity
         if not any(abs(newpos) > bounds):
             pos = newpos
         let tomouse = normalize(gl_local_mouse_pos(0) - pos)
-        renderEntity(tomouse)
+        renderEntity(tomouse, shiptex)
         return tomouse
 
     def damage(amount):
@@ -68,7 +70,7 @@ class Enemy : Entity
         if magnitude(playervec) < 1.0:
             player.damage(gl_delta_time() * 25.0)
         gl_color lerp(color_red, color_blue, div(hp, maxhp)):
-            renderEntity(playerdir)
+            renderEntity(playerdir, enemyshiptex)
 
 class World:
     player = Player { xy_0 }
@@ -140,6 +142,7 @@ class World:
 
 while gl_frame() and gl_button("escape") != 1:
     gl_clear(color_black)
+    gl_set_shader("textured")
     gl_color(color_white)
 
     static highscore = 0
