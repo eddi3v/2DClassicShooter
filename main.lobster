@@ -118,9 +118,17 @@ class World:
                     gl_color color_grey:
                         gl_circle(0.5, 20)
 
-            if score >= 10:
+            if score >= 100:
+                firerate = 0.13
+            if score >= 200:
                 worldsize = update_worldsize(20.0, 25.0)
+            if score >= 250:
+                firerate = 0.11
+            if score >= 400:
                 firerate = 0.1
+            if score >= 500:
+                worldsize = update_worldsize(25.0, 30.0)
+                firerate = 0.09
 
         return player.health
 
