@@ -3,81 +3,29 @@ import vec
 import color
 import gl
 
+import "src/Entity.lobster"
+import "src/Player.lobster"
+import "src/Enemy.lobster"
+import "src/Bullet.lobster"
+
 fatal(gl_window("2D Space Shooter", 1280, 720))
 
 check(gl_set_font_name("data/fonts/US101/US101.ttf") and gl_set_font_size(32), "can\'t load font!")
 
-let bgtex = gl_load_texture("galaxy.jpg")
+let bgtex = gl_load_texture("assets/galaxy.jpg")
+let shiptex = gl_load_texture("assets/MainShip.png")
+let enemyshiptex = gl_load_texture("assets/EnemyShip.png")
+let bullettex = gl_load_texture("assets/bullet.png")
+let crosshairtex = gl_load_texture("assets/crosshair.png")
+
 assert bgtex
-let shiptex = gl_load_texture("MainShip.png")
 assert shiptex
-let enemyshiptex = gl_load_texture("EnemyShip.png")
 assert enemyshiptex
-let bullettex = gl_load_texture("bullet.png")
 assert bullettex
-let crosshairtex = gl_load_texture("crosshair.png")
 assert crosshairtex
 
-class Entity:
-    pos:xy_f
-
-    def renderEntity(dir, size:xy_f, tex):
-        gl_translate pos:
-            gl_rotate_z dir:
-                gl_set_primitive_texture(0, tex)
-                gl_rect(size, 1)
-
-class Player : Entity
-    health = 100.0
-
-    def update(bounds):
-        let speed = 10
-        let dir = xy_f { (gl_button("d") >= 1) - (gl_button("a") >= 1),
-                        (gl_button("s") >= 1) - (gl_button("w") >= 1) }
-        let newpos = pos + normalize(dir) * gl_delta_time() * speed
-        if not any(abs(newpos) > bounds):
-            pos = newpos
-        let tomouse = normalize(gl_local_mouse_pos(0) - pos)
-        renderEntity(tomouse, xy{1.0,1.0}, shiptex)
-        return tomouse
-
-    def damage(amount):
-        health -= amount
-        if health <= 0.0:
-            health = 0.0
-
-class Bullet : Entity
-    dir:xy_f
-    alive = true
-
-    def update(maxdist):
-        let bulletspeed = 15
-        pos += dir * gl_delta_time() * bulletspeed
-        gl_translate pos:
-            gl_color color_yellow:
-                gl_set_primitive_texture(0, bullettex)
-                gl_rect(xy { 0.5, 0.5 }, 1)
-        if magnitude(pos) > maxdist:
-            alive = false
-
-class Enemy : Entity
-    hp:int
-
-    def update(player, bullets, maxhp):
-        let enemyspeed = 3
-        let playervec = player.pos - pos
-        let playerdir = normalize(playervec)
-        pos += playerdir * gl_delta_time() * enemyspeed
-        for(bullets) b:
-            if magnitude(b.pos - pos) < 1.0:
-                hp = max(0, --hp)
-                b.alive = false
-        if magnitude(playervec) < 1.0:
-            player.damage(gl_delta_time() * 25.0)
-        renderEntity(playerdir, xy{1.0,1.0}, enemyshiptex)
-
 class World:
-    player = Player { xy_0 }
+    player = Player { xy_0, shiptex }
 
     bullets = []
     lastbullet = gl_time()
@@ -113,13 +61,13 @@ class World:
 
             member lastenemy = gl_time()
             if lastenemy < gl_time():
-                enemies.push(Enemy { sincos(rnd(360)) * worldsize * 2.0, enemymaxhp})
+                enemies.push(Enemy { sincos(rnd(360)) * worldsize * 2.0, enemymaxhp, enemyshiptex})
                 member enemyrate = 1.0
                 lastenemy += enemyrate
                 enemyrate *= 0.999
 
             if lastbullet < gl_time():
-                bullets.push(Bullet { player.pos, tomouse })
+                bullets.push(Bullet { player.pos, tomouse, bullettex })
                 lastbullet += firerate
 
             enemies = filter(enemies) e:
