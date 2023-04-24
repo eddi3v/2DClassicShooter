@@ -14,7 +14,7 @@ fatal(gl_window("2D Space Shooter", 1280, 720))
 check(gl_set_font_name("data/fonts/US101/US101.ttf") and gl_set_font_size(32), "can\'t load font!")
 
 let bgmusic = play_ogg("assets/bg_fast.ogg", -1) 
-if bgmusic: sound_volume(bgmusic, 0.2) else: print "can\'t load music!"
+if bgmusic: sound_volume(bgmusic, 0.15) else: print "can\'t load music!"
 sound_pause(bgmusic)
 
 let bgtex = gl_load_texture("assets/galaxy.jpg")
