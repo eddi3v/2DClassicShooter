@@ -139,3 +139,4 @@ while gl_frame() and gl_button("escape") != 1:
                 if clicked:
                     w = World {}
                     sound_pause(bgmusic)
+                    clicked = false
