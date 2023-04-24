@@ -32,6 +32,7 @@ assert crosshairtex
 
 var clicked = false
 var focused = false
+
 class World:
     player = Player { xy_0, shiptex }
 
@@ -49,9 +50,9 @@ class World:
     new_worldsize = 0.0
 
     def render_background():
-        gl_set_primitive_texture(0, bgtex)
-    
-        gl_rect(float(gl_window_size())/2.0, 1)
+        gl_translate float(gl_window_size()) / 2.0:
+            gl_set_primitive_texture(0, bgtex)
+            gl_rect(float(gl_window_size())/2.0, 1)
 
     def update_worldsize(pos1, pos2):
         timevar += gl_delta_time()
@@ -60,8 +61,9 @@ class World:
         return new_worldsize
                 
     def update():
+        render_background()
+        gl_text("health: {ceiling(player.health)} - score: {score}")
         gl_translate float(gl_window_size()) / 2.0:
-            render_background()
             let scale = gl_window_size().y / worldsize
             gl_scale(scale)
 
@@ -112,11 +114,12 @@ while gl_frame() and gl_button("escape") != 1:
     
     gl_color(color_white)
 
+    gui_setclickcolors(color_grey, color_dark_grey)
+
     static highscore = 0
     static w = nil::World
 
     if w:
-        gl_text("health: {ceiling(w.player.health)} - score: {w.score} - highscore: {highscore}")
         if not w.update():
             highscore = max(highscore, w.score)
             w = nil
