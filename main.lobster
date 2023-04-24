@@ -2,6 +2,7 @@ import std
 import vec
 import color
 import gl
+import gui
 
 import "src/Entity.lobster"
 import "src/Player.lobster"
@@ -29,6 +30,8 @@ assert bullettex
 assert bulletlasertex
 assert crosshairtex
 
+var clicked = false
+var focused = false
 class World:
     player = Player { xy_0, shiptex }
 
@@ -119,10 +122,17 @@ while gl_frame() and gl_button("escape") != 1:
             w = nil
             sound_resume(bgmusic)
     else:
-        gl_text("highscore: {highscore}")
-        let msg = "press space to play!"
-        gl_translate float(gl_window_size() - gl_text_size(msg)) / 2.0:
-            gl_text(msg)
-        if gl_button("space") == 1:
-            w = World {}
-            sound_pause(bgmusic)
+        gui_start(gl_window_size(), 1, 1, true):
+            gui_vblock(1, 0):
+                gui_text("highscore: {highscore}")
+                gui_space(1.0)
+                gui_button():
+                    gui_border(xy_1i * 2):
+                        gui_text("Play Game")
+                fn:
+                    clicked = not clicked
+                fn:
+                    focused = not focused
+                if clicked:
+                    w = World {}
+                    sound_pause(bgmusic)
