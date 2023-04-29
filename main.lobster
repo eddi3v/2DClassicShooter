@@ -20,14 +20,12 @@ sound_pause(bgmusic)
 let bgtex = gl_load_texture("assets/galaxy.jpg")
 let shiptex = gl_load_texture("assets/ships/MainShip.png")
 let enemyshiptex = gl_load_texture("assets/ships/EnemyShip.png")
-let bullettex = gl_load_texture("assets/bullets/bullet.png")
-let bulletlasertex = gl_load_texture("assets/bullets/bullet_laser.png")
+let bulletlasertex = gl_load_texture("assets/bullets/14.png")
 let crosshairtex = gl_load_texture("assets/crosshair.png")
 
 assert bgtex
 assert shiptex
 assert enemyshiptex
-assert bullettex
 assert bulletlasertex
 assert crosshairtex
 
