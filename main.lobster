@@ -19,13 +19,20 @@ sound_pause(bgmusic)
 
 let bgtex = gl_load_texture("assets/galaxy.jpg")
 let shiptex = gl_load_texture("assets/ships/MainShip.png")
+
+//Enemy ships
 let enemyshiptex = gl_load_texture("assets/ships/EnemyShip.png")
+let enemyshiptex2 = gl_load_texture("assets/ships/EnemyShip2.png")
+let enemyshiptex3 = gl_load_texture("assets/ships/EnemyShip3.png")
+
 let bulletlasertex = gl_load_texture("assets/bullets/14.png")
 let crosshairtex = gl_load_texture("assets/crosshair.png")
 
 assert bgtex
 assert shiptex
 assert enemyshiptex
+assert enemyshiptex2
+assert enemyshiptex3
 assert bulletlasertex
 assert crosshairtex
 
@@ -39,6 +46,7 @@ class World:
     lastbullet = gl_time()
     firerate = 0.15
 
+    enemyships = [enemyshiptex, enemyshiptex2, enemyshiptex3]
     enemies = []
     enemymaxhp = 5
 
@@ -70,7 +78,16 @@ class World:
 
             member lastenemy = gl_time()
             if lastenemy < gl_time():
-                enemies.push(Enemy { sincos(rnd(360)) * worldsize * 2.0, enemymaxhp, enemyshiptex})
+                member random_enemies = 0
+                if score < 100:
+                    enemies.push(Enemy { sincos(rnd(360)) * worldsize * 2.0, enemymaxhp, enemyships[random_enemies]})
+                elif score >= 100 and score < 200:
+                    random_enemies = rnd(2)
+                    enemies.push(Enemy { sincos(rnd(360)) * worldsize * 2.0, enemymaxhp, enemyships[random_enemies]})
+                elif score >= 200:
+                    random_enemies = rnd(3)
+                    enemies.push(Enemy { sincos(rnd(360)) * worldsize * 2.0, enemymaxhp, enemyships[random_enemies]})
+                    print random_enemies
                 member enemyrate = 1.0
                 lastenemy += enemyrate
                 enemyrate *= 0.999
