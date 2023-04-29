@@ -24,6 +24,7 @@ let shiptex = gl_load_texture("assets/ships/MainShip.png")
 let enemyshiptex = gl_load_texture("assets/ships/EnemyShip.png")
 let enemyshiptex2 = gl_load_texture("assets/ships/EnemyShip2.png")
 let enemyshiptex3 = gl_load_texture("assets/ships/EnemyShip3.png")
+let bosstex = gl_load_texture("assets/ships/EnemyBoss.png")
 
 let bulletlasertex = gl_load_texture("assets/bullets/14.png")
 let crosshairtex = gl_load_texture("assets/crosshair.png")
@@ -33,6 +34,7 @@ assert shiptex
 assert enemyshiptex
 assert enemyshiptex2
 assert enemyshiptex3
+assert bosstex
 assert bulletlasertex
 assert crosshairtex
 
@@ -79,15 +81,17 @@ class World:
             member lastenemy = gl_time()
             if lastenemy < gl_time():
                 member random_enemies = 0
-                if score < 100:
-                    enemies.push(Enemy { sincos(rnd(360)) * worldsize * 2.0, enemymaxhp, enemyships[random_enemies]})
-                elif score >= 100 and score < 200:
+                // Spawn different enemy ships
+                if score >= 100 and score < 200:
                     random_enemies = rnd(2)
-                    enemies.push(Enemy { sincos(rnd(360)) * worldsize * 2.0, enemymaxhp, enemyships[random_enemies]})
                 elif score >= 200:
                     random_enemies = rnd(3)
-                    enemies.push(Enemy { sincos(rnd(360)) * worldsize * 2.0, enemymaxhp, enemyships[random_enemies]})
-                    print random_enemies
+                enemies.push(Enemy { sincos(rnd(360)) * worldsize * 2.0, enemymaxhp, xy{1.0,1.0}, enemyships[random_enemies]})
+
+                //Spawn Bosses
+                if score == 10:
+                    enemies.push(Enemy { sincos(rnd(360)) * worldsize * 2.0, enemymaxhp * 4, xy{2.0,2.0}, bosstex})
+
                 member enemyrate = 1.0
                 lastenemy += enemyrate
                 enemyrate *= 0.999
