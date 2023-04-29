@@ -33,7 +33,7 @@ let enemyshiptex2 = gl_load_texture("assets/ships/EnemyShip2.png")
 let enemyshiptex3 = gl_load_texture("assets/ships/EnemyShip3.png")
 let bosstex = gl_load_texture("assets/ships/EnemyBoss.png")
 
-let bulletlasertex = gl_load_texture("assets/bullets/14.png")
+let bulletlasertex = gl_load_texture("assets/bullets/01.png")
 let crosshairtex = gl_load_texture("assets/crosshair.png")
 
 assert bgtex
