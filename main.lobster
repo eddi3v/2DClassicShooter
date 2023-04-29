@@ -18,7 +18,12 @@ if bgmusic: sound_volume(bgmusic, 0.15) else: print "can\'t load music!"
 sound_pause(bgmusic)
 
 let bgtex = gl_load_texture("assets/galaxy.jpg")
+
+//Main ship
 let shiptex = gl_load_texture("assets/ships/MainShip.png")
+let slightshiptex = gl_load_texture("assets/ships/MainShipSlightDamage.png")
+let damagedshiptex = gl_load_texture("assets/ships/MainShipDamage.png")
+let verydamagedshiptex = gl_load_texture("assets/ships/MainShipVeryDamage.png")
 
 //Enemy ships
 let enemyshiptex = gl_load_texture("assets/ships/EnemyShip.png")
@@ -30,10 +35,16 @@ let bulletlasertex = gl_load_texture("assets/bullets/14.png")
 let crosshairtex = gl_load_texture("assets/crosshair.png")
 
 assert bgtex
+
 assert shiptex
+assert slightshiptex
+assert damagedshiptex
+assert verydamagedshiptex
+
 assert enemyshiptex
 assert enemyshiptex2
 assert enemyshiptex3
+
 assert bosstex
 assert bulletlasertex
 assert crosshairtex
@@ -42,6 +53,7 @@ var clicked = false
 var focused = false
 
 class World:
+    ships = [shiptex, slightshiptex, damagedshiptex, verydamagedshiptex]
     player = Player { xy_0, shiptex }
 
     bullets = []
@@ -77,6 +89,14 @@ class World:
             gl_scale(scale)
 
             let tomouse = player.update(float(gl_window_size()) / scale / 2.0)
+
+            // Update player texture based on health
+            if player.health <= 80.0 and player.health > 50.0:
+                player.texture = ships[1]
+            elif player.health <= 50.0 and player.health > 20.0:
+                player.texture = ships[2]
+            elif player.health <= 20.0:
+                player.texture = ships[3]
 
             member lastenemy = gl_time()
             if lastenemy < gl_time():
