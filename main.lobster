@@ -18,6 +18,8 @@ if bgmusic: sound_volume(bgmusic, 0.15) else: print "can\'t load music!"
 sound_pause(bgmusic)
 
 let bgtex = gl_load_texture("assets/galaxy.jpg")
+let bgtexlayer1 = gl_load_texture("assets/bg_layer1.png")
+let bgtexlayer2 = gl_load_texture("assets/bg_layer2.png")
 
 //Main ship
 let shiptex = gl_load_texture("assets/ships/MainShip.png")
@@ -35,6 +37,8 @@ let bulletlasertex = gl_load_texture("assets/bullets/14.png")
 let crosshairtex = gl_load_texture("assets/crosshair.png")
 
 assert bgtex
+assert bgtexlayer1
+assert bgtexlayer2
 
 assert shiptex
 assert slightshiptex
@@ -72,7 +76,9 @@ class World:
 
     def render_background():
         gl_translate float(gl_window_size()) / 2.0:
-            gl_set_primitive_texture(0, bgtex)
+            gl_set_primitive_texture(0, bgtexlayer1)
+            gl_rect(float(gl_window_size())/2.0, 1)
+            gl_set_primitive_texture(0, bgtexlayer2)
             gl_rect(float(gl_window_size())/2.0, 1)
 
     def update_worldsize(pos1, pos2):
